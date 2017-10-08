@@ -8,6 +8,16 @@ import game.cards.base.Estate;
 import java.util.Collections;
 import java.util.List;
 
+/*
+A Deck represents all the cards owned by a player. A player's cards can be in 1 of 4 states, 3 of which are represented
+by the Deck object. The 4th state: inPlay, belongs to the Turn.
+
+hand: Cards the player holds and are available to play
+discard: Cards that have been discarded and cleaned up after being inPlay
+deck: Cards that are available to be drawn.
+
+ */
+
 public class Deck {
 
     private List<Card> hand = Lists.newArrayList();
@@ -24,8 +34,8 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-    public void drawFromDeckToHand(int numberOfDraws) {
-        while(numberOfDraws > 0 && deck.size() + discard.size() > 0) {
+    public void drawCards(int numberOfDraws) {
+        while(numberOfDraws > 0 && hasCardToDraw()) {
             validateDeckState();
             hand.add(deck.remove(0));
             numberOfDraws--;
@@ -37,6 +47,26 @@ public class Deck {
             discard.add(card);
             hand.remove(card);
         }
+    }
+
+    public void drawCardsUntil(int numberOfCardsInHand) {
+        while(hand.size() < numberOfCardsInHand && hasCardToDraw()){
+            validateDeckState();
+            drawCards(1);
+        }
+    }
+
+    public void drawNewHand() {
+        this.drawCards(5);
+    }
+
+    public void cleanUpHand() {
+        discard.addAll(hand);
+        hand.clear();
+    }
+
+    private boolean hasCardToDraw() {
+        return deck.size() + discard.size() > 0;
     }
 
     private void validateDeckState() {

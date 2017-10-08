@@ -5,6 +5,7 @@ import game.cards.base.Copper;
 import game.cards.base.Estate;
 import game.cards.base.Silver;
 import game.player.Deck;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -13,9 +14,13 @@ public class DeckTests {
 
     Deck deck;
 
-    @Test
-    public void testInitialize() {
+    @Before
+    public void setUp() {
         deck = new Deck();
+    }
+
+    @Test
+    public void initialize() {
         assertThat(deck.getDeck().size()).isEqualTo(0);
         assertThat(deck.getHand().size()).isEqualTo(0);
         assertThat(deck.getDiscard().size()).isEqualTo(0);
@@ -37,27 +42,25 @@ public class DeckTests {
     }
 
     @Test
-    public void testDrawFromDeckToHand() {
-        deck = new Deck();
+    public void drawFromDeckToHand() {
         deck.initialize();
 
-        deck.drawFromDeckToHand(1);
+        deck.drawCards(1);
         assertThat(deck.getDeck().size()).isEqualTo(9);
         assertThat(deck.getHand().size()).isEqualTo(1);
-        deck.drawFromDeckToHand(2);
+        deck.drawCards(2);
         assertThat(deck.getDeck().size()).isEqualTo(7);
         assertThat(deck.getHand().size()).isEqualTo(3);
-        deck.drawFromDeckToHand(3);
+        deck.drawCards(3);
         assertThat(deck.getDeck().size()).isEqualTo(4);
         assertThat(deck.getHand().size()).isEqualTo(6);
-        deck.drawFromDeckToHand(5);
+        deck.drawCards(5);
         assertThat(deck.getDeck().size()).isEqualTo(0);
         assertThat(deck.getHand().size()).isEqualTo(10);
     }
 
     @Test
-    public void testDiscardFromHandToDiscard() {
-        deck = new Deck();
+    public void discardFromHandToDiscard() {
         deck.getHand().add(new Copper());
         deck.getHand().add(new Estate());
 
@@ -72,5 +75,37 @@ public class DeckTests {
         deck.discardFromHandToDiscard(new Silver());
         assertThat(deck.getHand().size()).isEqualTo(0);
         assertThat(deck.getDiscard().size()).isEqualTo(2);
+    }
+
+    @Test
+    public void drawNewHand() {
+        deck.initialize();
+        deck.drawNewHand();
+        assertThat(deck.getDeck().size()).isEqualTo(5);
+        assertThat(deck.getHand().size()).isEqualTo(5);
+    }
+
+    @Test
+    public void drawUntil() {
+        deck.initialize();
+        deck.drawCardsUntil(11);
+        assertThat(deck.getDeck().size()).isEqualTo(0);
+        assertThat(deck.getHand().size()).isEqualTo(10);
+    }
+
+    @Test
+    public void cleanUpHand() {
+        deck.getHand().add(new Copper());
+        deck.getHand().add(new Copper());
+        deck.getHand().add(new Estate());
+        assertThat(deck.getHand().size()).isEqualTo(3);
+        assertThat(deck.getDiscard().size()).isEqualTo(0);
+
+        deck.cleanUpHand();
+        assertThat(deck.getHand().size()).isEqualTo(0);
+        assertThat(deck.getDiscard().size()).isEqualTo(3);
+        deck.cleanUpHand(); //check if it works with hand size = 0
+        assertThat(deck.getHand().size()).isEqualTo(0);
+        assertThat(deck.getDiscard().size()).isEqualTo(3);
     }
 }
