@@ -21,16 +21,16 @@ public class DeckTests {
 
     @Test
     public void initialize() {
-        assertThat(deck.getDeck().size()).isEqualTo(0);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(0);
         assertThat(deck.getHand().size()).isEqualTo(0);
         assertThat(deck.getDiscard().size()).isEqualTo(0);
 
         deck.initialize();
-        assertThat(deck.getDeck().size()).isEqualTo(10);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(10);
 
         int coppers = 0;
         int estates = 0;
-        for(Card card : deck.getDeck()) {
+        for(Card card : deck.getDrawDeck()) {
             if(card instanceof Estate){
                 estates++;
             } else if (card instanceof Copper) {
@@ -46,16 +46,16 @@ public class DeckTests {
         deck.initialize();
 
         deck.drawCards(1);
-        assertThat(deck.getDeck().size()).isEqualTo(9);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(9);
         assertThat(deck.getHand().size()).isEqualTo(1);
         deck.drawCards(2);
-        assertThat(deck.getDeck().size()).isEqualTo(7);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(7);
         assertThat(deck.getHand().size()).isEqualTo(3);
         deck.drawCards(3);
-        assertThat(deck.getDeck().size()).isEqualTo(4);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(4);
         assertThat(deck.getHand().size()).isEqualTo(6);
         deck.drawCards(5);
-        assertThat(deck.getDeck().size()).isEqualTo(0);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(0);
         assertThat(deck.getHand().size()).isEqualTo(10);
     }
 
@@ -81,7 +81,7 @@ public class DeckTests {
     public void drawNewHand() {
         deck.initialize();
         deck.drawNewHand();
-        assertThat(deck.getDeck().size()).isEqualTo(5);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(5);
         assertThat(deck.getHand().size()).isEqualTo(5);
     }
 
@@ -89,7 +89,7 @@ public class DeckTests {
     public void drawUntil() {
         deck.initialize();
         deck.drawCardsUntil(11);
-        assertThat(deck.getDeck().size()).isEqualTo(0);
+        assertThat(deck.getDrawDeck().size()).isEqualTo(0);
         assertThat(deck.getHand().size()).isEqualTo(10);
     }
 

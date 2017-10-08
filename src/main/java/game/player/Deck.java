@@ -7,6 +7,7 @@ import game.cards.base.Estate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 /*
 A Deck represents all the cards owned by a player. A player's cards can be in 1 of 4 states, 3 of which are represented
@@ -14,30 +15,30 @@ by the Deck object. The 4th state: inPlay, belongs to the Turn.
 
 hand: Cards the player holds and are available to play
 discard: Cards that have been discarded and cleaned up after being inPlay
-deck: Cards that are available to be drawn.
+drawDeck: Cards that are available to be drawn.
 
  */
 
 public class Deck {
 
     private List<Card> hand = Lists.newArrayList();
-    private List<Card> discard = Lists.newArrayList();
-    private List<Card> deck = Lists.newArrayList();
+    private Stack<Card> discard = new Stack<>();
+    private Stack<Card> drawDeck = new Stack<>();
 
     public void initialize() {
         for(int i = 0; i < 3; i++) {
-            deck.add(new Estate());
+            drawDeck.push(new Estate());
         }
         for(int i = 0; i < 7; i++) {
-            deck.add(new Copper());
+            drawDeck.push(new Copper());
         }
-        Collections.shuffle(deck);
+        Collections.shuffle(drawDeck);
     }
 
     public void drawCards(int numberOfDraws) {
         while(numberOfDraws > 0 && hasCardToDraw()) {
-            validateDeckState();
-            hand.add(deck.remove(0));
+            shuffleIfNeeded();
+            hand.add(drawDeck.remove(0));
             numberOfDraws--;
         }
     }
@@ -51,7 +52,7 @@ public class Deck {
 
     public void drawCardsUntil(int numberOfCardsInHand) {
         while(hand.size() < numberOfCardsInHand && hasCardToDraw()){
-            validateDeckState();
+            shuffleIfNeeded();
             drawCards(1);
         }
     }
@@ -66,14 +67,14 @@ public class Deck {
     }
 
     private boolean hasCardToDraw() {
-        return deck.size() + discard.size() > 0;
+        return drawDeck.size() + discard.size() > 0;
     }
 
-    private void validateDeckState() {
-        if(deck.size() == 0) {
-            deck = Lists.newArrayList(discard);
+    private void shuffleIfNeeded() {
+        if(drawDeck.size() == 0) {
+            drawDeck = (Stack<Card>)discard.clone();
             discard.clear();
-            Collections.shuffle(deck);
+            Collections.shuffle(drawDeck);
         }
     }
 
@@ -81,11 +82,11 @@ public class Deck {
         return hand;
     }
 
-    public List<Card> getDiscard() {
+    public Stack<Card> getDiscard() {
         return discard;
     }
 
-    public List<Card> getDeck() {
-        return deck;
+    public Stack<Card> getDrawDeck() {
+        return drawDeck;
     }
 }

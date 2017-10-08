@@ -1,30 +1,31 @@
 package game.cards;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
-
 public abstract class Card {
-
-    private List<CardType> cardTypes;
-
-    public Card() {
-        this.cardTypes = Lists.newArrayList();
-    }
 
     public abstract int getCost();
     public abstract String getName();
     public abstract String getDescription();
 
-    public List<CardType> getCardTypes() {
-        return cardTypes;
+    public boolean isTreasure() {
+        if(this instanceof TreasureCard) {
+            return true;
+        }
+        return false;
     }
 
-    public void setCardTypes(List<CardType> cardTypes) {
-        this.cardTypes = cardTypes;
+    public boolean isVictory() {
+        if(this instanceof VictoryCard) {
+            return true;
+        }
+        return false;
     }
 
-    public abstract void addCartType();
+    public boolean isAction() {
+        if(this instanceof ActionCard) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object obj) {

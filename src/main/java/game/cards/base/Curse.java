@@ -1,7 +1,6 @@
 package game.cards.base;
 
 import game.cards.Card;
-import game.cards.CardType;
 
 public class Curse extends Card {
 
@@ -18,10 +17,5 @@ public class Curse extends Card {
     @Override
     public String getDescription() {
         return "Worth -1 VP";
-    }
-
-    @Override
-    public void addCartType() {
-        this.getCardTypes().add(CardType.CURSE);
     }
 }

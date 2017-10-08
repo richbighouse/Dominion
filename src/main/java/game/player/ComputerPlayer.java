@@ -1,4 +1,4 @@
 package game.player;
 
-public class ComputerPlayer {
+public class ComputerPlayer extends Player {
 }

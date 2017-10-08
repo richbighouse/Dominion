@@ -12,8 +12,9 @@ public class Silver extends TreasureCard {
     }
 
     @Override
-    public void play(Turn turn) {
-
+    public void playTreasure(Turn turn) {
+        turn.addCoins(this.getCoins());
+        turn.moveFromHandToInPlay(this);
     }
 
     @Override
