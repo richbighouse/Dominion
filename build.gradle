@@ -8,8 +8,10 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:22.0'
+    compile 'org.springframework:spring-context:5.0.0.RELEASE'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.8.0'
 }
 
 // Define the main class for the application
